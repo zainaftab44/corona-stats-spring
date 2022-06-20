@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Corona Stats</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+        <h1 class="text-center">Cororna Stats</h1>
+        <div class="h-100 mb-4 p-5 text-white bg-dark rounded-3">
+            Total number of cases <h3 th:text="${#numbers.formatInteger(totalCases,1,'COMMA')}">0</h3>
+            <hr>
+            <h4 th:text="${totalNewCases}"/>New cases
+        </div>
+        <table class="table table-striped table-hover table-bordered">
+            <tr>
+                <th>Country</th>
+                <th>State</th>
+                <th>Total Toll</th>
+                <th>Change</th>
+                <th>Recovered Toll</th>
+                <th>Change</th>
+                <th>Death Toll</th>
+                <th>Change</th>
+            </tr>
+            <tr th:each="stat: ${stats}">
+                <td th:text="${stat.getCountry()}"/>
+                <td th:text="${stat.getState()}"/>
+                <td th:text="${#numbers.formatInteger(stat.getCurrentToll(),1,'COMMA')}"/>
+                <td th:text="${#numbers.formatInteger(stat.getCurrentTollDiff(),1,'COMMA')}"/>
+                <td th:text="${#numbers.formatInteger(stat.getRecoveredToll(),1,'COMMA')}"/>
+                <td th:text="${#numbers.formatInteger(stat.getRecoveredTollDiff(),1,'COMMA')}"/>
+                <td th:text="${#numbers.formatInteger(stat.getDeathToll(),1,'COMMA')}"/>
+                <td th:text="${#numbers.formatInteger(stat.getDeathTollDiff(),1,'COMMA')}"/>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+
+</html>
