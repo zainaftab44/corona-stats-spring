@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.StringReader;
-import java.lang.annotation.ElementType;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -19,9 +18,9 @@ import java.util.Optional;
 
 @Service
 public class CoronaDataService {
-    private static String confirmedUrl = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
-    private static String recoveredUrl = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv";
-    private static String deathUrl = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv";
+    private static final String confirmedUrl = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
+    private static final String recoveredUrl = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv";
+    private static final String deathUrl = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv";
 
     private ArrayList<CoronaStat> confirmedStats = new ArrayList<>();
     private ArrayList<CoronaStat> recoveredStats = new ArrayList<>();
@@ -36,7 +35,7 @@ public class CoronaDataService {
     @DependsOn(value = "fetchConfirmedStats")
     public void fetchRecoveredStats() throws IOException, InterruptedException {
         this.recoveredStats = fetchVirusData(recoveredUrl);
-        this.recoveredStats.stream().forEach(s->System.out.println(s));;
+        this.recoveredStats.stream().forEach(s -> System.out.println(s));
         this.confirmedStats.stream().forEach(stat -> {
             Optional<CoronaStat> d = this.recoveredStats.stream().filter(rs -> rs.getState().equals(stat.getState()) && rs.getCountry().equals(stat.getCountry())).findFirst();
             stat.setRecoveredToll(d.map(CoronaStat::getCurrentToll).orElse(0));

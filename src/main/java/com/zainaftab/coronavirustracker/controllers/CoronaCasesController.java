@@ -13,13 +13,14 @@ import java.util.ArrayList;
 public class CoronaCasesController {
 
     @Autowired
-    CoronaDataService dataService ;
+    CoronaDataService dataService;
+
     @GetMapping("/")
-    public String index(Model model){
+    public String index(Model model) {
         ArrayList<CoronaStat> confirmedStats = dataService.getConfirmedStats();
         model.addAttribute("stats", confirmedStats);
-        model.addAttribute("totalCases",confirmedStats.stream().mapToLong(stat -> stat.getCurrentToll()).sum());
-        model.addAttribute("totalNewCases",confirmedStats.stream().mapToLong(stat -> stat.getCurrentTollDiff()).sum());
+        model.addAttribute("totalCases", confirmedStats.stream().mapToLong(stat -> stat.getCurrentToll()).sum());
+        model.addAttribute("totalNewCases", confirmedStats.stream().mapToLong(stat -> stat.getCurrentTollDiff()).sum());
         return "index";
     }
 }
